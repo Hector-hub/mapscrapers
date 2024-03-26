@@ -1,0 +1,39 @@
+# Ignora archivos y carpetas generados por el sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignora archivos de registro y caché
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignora directorios específicos
+/node_modules/
+
+
+# Ignora archivos de configuración local
+.env
+.env.local
+.env.*.local
+
+# Ignora archivos de dependencias
+/package-lock.json
+/yarn.lock
+
+# Ignora archivos de IDE y editores de texto
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Ignora archivos de compilación
+*.class
+*.jar
+*.war
+*.pyc
+
+# Ignora archivos de respaldo
+*~
+*.bak
+*.swp
