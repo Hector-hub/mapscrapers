@@ -1,0 +1,11 @@
+{
+  "name": "mapscrapers",
+  "description": "Mapscrapers is an API designed to collect route data from Google Maps in order to identify the optimal times to travel these routes.",
+  "version": "2.0.0",
+  "main": "index.ts",
+  "author": "hecrey",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^22.6.0"
+  }
+}

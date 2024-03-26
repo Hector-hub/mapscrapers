@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapscrapers Docs</title>
+  <link rel="icon" type="image/x-icon" href="https://hecrey.000webhostapp.com/public/img/projects/mapscrapers_fav.ico">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    pre {
+      background-color: #f4f4f4;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+
+    pre code {
+      padding: 0;
+      border-radius: 0;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px 0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .logo {
+      border-radius: 20%;
+    }
+
+
+
+    a {
+      outline: none;
+      text-decoration: none;
+      padding: 2px 1px 0;
+    }
+
+    a:link {
+      color: #006ce9;
+    }
+
+    a:visited {
+      color: #006ce9;
+    }
+
+    a:focus {
+      border-bottom: 1px solid;
+      background: #fff;
+    }
+
+    a:hover {
+      border-bottom: 1px solid;
+      background: #fff;
+    }
+
+    a:active {
+      background: #006ce9;
+      color: #fff;
+    }
+
+    .powered-by {
+      margin-block-start: -15px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <img src="https://hecrey.000webhostapp.com/public/img/projects/mapscrapers.png" width="100" height="100"
+      class="logo">
+    <h1>Docs</h1>
+  </header>
+  <main>
+
+    <section>
+      <h2>Descripción</h2>
+      <p>
+        Mapscrapers es una API diseñada para recopilar datos de rutas de Google Maps con el fin de identificar los
+        momentos óptimos para transitar dichas rutas.
+      </p>
+    </section>
+
+    <section>
+      <h2>Dominio</h2>
+      <code>https://mapscrapers.onrender.com/</code>
+    </section>
+
+    <section>
+      <h2>Parámetros</h2>
+      <ul>
+        <li><code>url</code> - La URL de la ruta de google maps.</li>
+        <li><code>id</code> - Identificador único para obtener resultados asociados a una ruta específica.
+        </li>
+      </ul>
+    </section>
+    <section>
+      <h2>Endpoints</h2>
+      <ul>
+        <li><code>/makeRequest</code> - Para realizar una solicitud de recolección de data.</li>
+        <li><code>/getResults</code> - Para obtener resultados de la solicitud realizada.</li>
+        <li><code>/getAllRequestsResults</code> - Para obtener todos los resultados de las solicitudes realizadas.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Ejemplo de Uso</h2>
+      <h3>/makeRequest</h3>
+      <p>Realizar una solicitud:</p>
+      <pre><code>
+fetch('/makeRequest?url=https://www.google.com/maps/dir/La+Romana/Boca+Chica/@18.450333,-69.4262336,11z/data=!4m14!4m13!1m5!1m1!1s0x8eaf5468f250cc2b:0x174be55fc8eb99d9!2m2!1d-68.9658817!2d18.4338645!1m5!1m1!1s0x8eaf7e4f2d66d645:0xcc38335d1eba7e73!2m2!1d-69.6082811!2d18.4547535!3e0?entry=ttu', {
+  method: 'GET'
+})
+.then(response => response.text())
+.then(data => console.log(data));
+      </code></pre>
+      <p>
+        Respuesta:
+      </p>
+      <pre><code>
+{
+  requestId: 'la-romana_boca-chica'
+}
+      </code></pre>
+
+      <h3>/getResults</h3>
+      <p>Obtener resultados:</p>
+      <pre><code>
+fetch('/getResults?id=la-romana_boca-chica', {
+method: 'GET'
+})
+.then(response => response.json())
+.then(data => console.log(data));
+      </code></pre>
+
+      <p>
+        Respuesta:
+      </p>
+      <pre><code>
+[
+  {
+    "date": "3/23/2024, 9:46:03 AM",
+    "options": [ 6, 9, 9 ],
+    "optionsTimeType": "minutes"
+  }
+]
+      </code></pre>
+
+      <h3>/getAllRequestsResults</h3>
+      <p>Obtener resultados:</p>
+      <pre><code>
+fetch('/getAllRequestsResults', {
+method: 'GET'
+})
+.then(response => response.json())
+.then(data => console.log(data));
+      </code></pre>
+
+      <p>
+        Respuesta:
+      </p>
+      <pre><code>
+{
+  "la-romana_boca-chica": [
+  {
+    "date": "3/25/2024, 5:06:44 AM",
+    "options": [
+      40
+    ],
+    "optionsTimeType": "minutes"
+  }
+  ],
+  "santo-domingo_bani": [
+    {
+      "date": "3/25/2024, 5:06:58 AM",
+      "options": [
+        59
+      ],
+      "optionsTimeType": "minutes"
+    }
+  ]
+}
+      </code></pre>
+    </section>
+  </main>
+  <br>
+  <br>
+  <br>
+  <br>
+  <footer>
+    <h4> &copy; 2024 Mapscrapers
+    </h4>
+    <h6 class="powered-by"> Powered by <a href="https://hecrey.000webhostapp.com" target="_blank"
+        rel="noopener noreferrer">hecrey</a> </h6>
+  </footer>
+</body>
+
+</html>
