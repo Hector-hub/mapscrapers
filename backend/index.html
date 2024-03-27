@@ -144,7 +144,7 @@
       <h3>/makeRequest</h3>
       <p>Realizar una solicitud:</p>
       <pre><code>
-fetch('/makeRequest?url=https://www.google.com/maps/dir/La+Romana/Boca+Chica/@18.450333,-69.4262336,11z/data=!4m14!4m13!1m5!1m1!1s0x8eaf5468f250cc2b:0x174be55fc8eb99d9!2m2!1d-68.9658817!2d18.4338645!1m5!1m1!1s0x8eaf7e4f2d66d645:0xcc38335d1eba7e73!2m2!1d-69.6082811!2d18.4547535!3e0?entry=ttu', {
+fetch('/makeRequest?id=la-romana_boca-chica&url=https://www.google.com/maps/dir/La+Romana/Boca+Chica/@18.450333,-69.4262336,11z/data=!4m14!4m13!1m5!1m1!1s0x8eaf5468f250cc2b:0x174be55fc8eb99d9!2m2!1d-68.9658817!2d18.4338645!1m5!1m1!1s0x8eaf7e4f2d66d645:0xcc38335d1eba7e73!2m2!1d-69.6082811!2d18.4547535!3e0?entry=ttu', {
   method: 'GET'
 })
 .then(response => response.text())
@@ -154,9 +154,7 @@ fetch('/makeRequest?url=https://www.google.com/maps/dir/La+Romana/Boca+Chica/@18
         Respuesta:
       </p>
       <pre><code>
-{
-  requestId: 'la-romana_boca-chica'
-}
+        Your request was created!
       </code></pre>
 
       <h3>/getResults</h3>

@@ -64,8 +64,8 @@ const startServer = async (apiKey) => {
       }, scrapingFrequency / 4);
 
       saveInterval = setInterval(() => {
-          setResults(results);
-          results = {};
+        setResults(results);
+        results = {};
       }, scrapingFrequency);
       response = new Response("Scraping!");
       isStarted = true;
@@ -77,9 +77,8 @@ const startServer = async (apiKey) => {
   }
 };
 const stopServer = (apiKey) => {
-
-    if (isStarted) {
-      if (apiKey === serverPassword) {
+  if (isStarted) {
+    if (apiKey === serverPassword) {
       clearInterval(saveInterval);
       clearInterval(scrapingInterval);
       browser.close();
@@ -89,11 +88,9 @@ const stopServer = (apiKey) => {
     } else {
       response = new Response("Invalid apiKey", { status: 404 });
     }
-    }else{
-      response = new Response("The server must be started first!");
-    }
- 
-
+  } else {
+    response = new Response("The server must be started first!");
+  }
 };
 const resetServer = (apiKey) => {
   if (isConfigured) {
@@ -112,26 +109,29 @@ const resetServer = (apiKey) => {
     response = new Response("The server must be configured first!");
   }
 };
-const makeRequest = async (ruta: any) => {
+const makeRequest = async (id: any, ruta: any) => {
   if (isConfigured) {
     if (validateURL(ruta)) {
-      const id = getId(ruta);
-      await getRequestById(id).then((result) => {
-        if (result == null) {
-          if (results[id] == undefined) {
-            results[id] = [];
+      if (id) {
+        await getRequestById(id).then((result) => {
+          if (result == null) {
+            if (results[id] == undefined) {
+              results[id] = [];
+            }
+            const request = {
+              id,
+              ruta,
+            };
+            requests.push(request);
+            setRequest(requests);
+            response = new Response("Your request was created!");
+          } else {
+            response = new Response("This request exist, try to get results.");
           }
-          const request = {
-            id,
-            ruta,
-          };
-          requests.push(request);
-          setRequest(requests);
-          response = new Response(JSON.stringify({ requestId: id }));
-        } else {
-          response = new Response("This request exist, try to get results.");
-        }
-      });
+        });
+      } else {
+        response = new Response("Invalid id");
+      }
     } else {
       response = new Response("Invalid url");
     }
@@ -144,8 +144,8 @@ const getResultsAndSort = async (id: any) => {
     if (id) {
       await getResultsById(id).then((results: any) => {
         if (results !== null) {
-          let resultsData=[...Object.values(results)]
-          resultsData.sort((a:any, b:any) => {
+          let resultsData = [...Object.values(results)];
+          resultsData.sort((a: any, b: any) => {
             const timeOption1A = parseInt(a.options[0]);
             const timeOption1B = parseInt(b.options[0]);
             return timeOption1A - timeOption1B;
@@ -165,9 +165,9 @@ const getResultsAndSort = async (id: any) => {
 const getAllRequestsResults = async () => {
   if (isConfigured) {
     await getResults().then((resultsData: any) => {
-      let newObj:any = {}
+      let newObj: any = {};
       for (var key in resultsData) {
-        newObj[key] = [...Object.values(resultsData[key])]
+        newObj[key] = [...Object.values(resultsData[key])];
       }
       response = new Response(JSON.stringify(newObj));
     });
@@ -234,15 +234,15 @@ const setServerData = async () => {
 Deno.serve(async (req) => {
   const url = new URL(req.url);
   const apiKey = url.searchParams.get("apiKey");
+  const id = url.searchParams.get("id");
   if (req.method === "GET") {
     switch (url.pathname) {
       case "/makeRequest":
         const ruta = url.searchParams.get("url");
-        await makeRequest(ruta);
+        await makeRequest(id, ruta);
         break;
 
       case "/getResults":
-        const id = url.searchParams.get("id");
         await getResultsAndSort(id);
         break;
 
@@ -256,7 +256,7 @@ Deno.serve(async (req) => {
         break;
 
       case "/startServer":
-      await startServer(apiKey);
+        await startServer(apiKey);
 
         break;
 
