@@ -6,102 +6,112 @@ import {
   get,
   child,
   getDatabase,
-  push
+  push,
 } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
+import {
+  signInWithEmailAndPassword,
+  getAuth,
+} from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 
-let db:any;
+let db: any;
 
 export const setResults = (results: any) => {
-    for (var key in results) {
-      const resultListRef = ref(db, 'results/'+key);
-      results[key].forEach(item => {
-        const newResultListRef = push(resultListRef);
-        set(newResultListRef, item);
-      });
-    }
-    
-};
-  
-export const getResults = async () => {
-    let data = null;
-    const dbRef = ref(db);
-    await get(child(dbRef, `results`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          data = snapshot.val();
-          //   console.log(data);
-        } else {
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  
-    return data;
+  for (var key in results) {
+    const resultListRef = ref(db, "results/" + key);
+    results[key].forEach((item) => {
+      const newResultListRef = push(resultListRef);
+      set(newResultListRef, item);
+    });
+  }
 };
 
-export const getResultsById :any= async (id) => {
-    let data = null;
-    const dbRef = ref(db);
-    await get(child(dbRef, `results/${id}`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          data = snapshot.val();
-          //   console.log(data);
-        } else {
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  
-    return data;
+export const getResults = async () => {
+  let data = null;
+  const dbRef = ref(db);
+  await get(child(dbRef, `results`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        data = snapshot.val();
+        //   console.log(data);
+      } else {
+        console.log("No data available");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  return data;
 };
-  
+
+export const getResultsById: any = async (id) => {
+  let data = null;
+  const dbRef = ref(db);
+  await get(child(dbRef, `results/${id}`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        data = snapshot.val();
+        //   console.log(data);
+      } else {
+        console.log("No data available");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  return data;
+};
+
 export const setRequest = (request) => {
-    set(ref(db, "requests"), request);
+  set(ref(db, "requests"), request);
 };
-  
+
 export const getRequest = async () => {
-    const dbRef = ref(db);
-    let data = null;
-    await get(child(dbRef, `requests`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          data = snapshot.val();
-        } else {
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  
-    return data;
+  const dbRef = ref(db);
+  let data = null;
+  await get(child(dbRef, `requests`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        data = snapshot.val();
+      } else {
+        console.log("No data available");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  return data;
 };
 
 export const getRequestById = async (id) => {
-    const dbRef = ref(db);
-    let data:any = null;
-    await get(child(dbRef, `requests`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-         let requests = snapshot.val();
-         data=requests.find(item => item.id === id)
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  
-    return data;
+  const dbRef = ref(db);
+  let data: any = null;
+  await get(child(dbRef, `requests`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        let requests = snapshot.val();
+        data = requests.find((item) => item.id === id);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  return data;
 };
 
-export const initializeFirebase=(firebaseConfig)=>{ 
-    const app = initializeApp(firebaseConfig);
-    db =  getDatabase(app);
-    console.log('Database initialized!');
-}
+export const initializeFirebase = async (firebaseConfig, apiKey) => {
+  const app = initializeApp(firebaseConfig);
+  db = getDatabase(app);
+  const auth = getAuth(app);
+
+  await signInWithEmailAndPassword(
+    auth,
+    "hectordavidreyes05@gmail.com",
+    apiKey
+  );
+  console.log("Database initialized!");
+};

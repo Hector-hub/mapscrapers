@@ -41,7 +41,7 @@ const configureServer = async (apiKey) => {
         firebaseConfig.appId = envVars.APP_ID;
         firebaseConfig.measurementId = envVars.MEASUREMENT_ID;
         serverPassword = envVars.SERVER_PASSWORD;
-        initializeFirebase(firebaseConfig);
+        initializeFirebase(firebaseConfig,apiKey);
         setServerData();
         response = new Response("Server configured!");
         isConfigured = true;
