@@ -28,7 +28,7 @@ let isStarted = false;
 
 const configureServer = async (apiKey) => {
   await decrypt(envConfig, apiKey)
-    .then((result) => {
+    .then(async (result) => {
       const envVars = JSON.parse(result);
       serverPassword = envVars.SERVER_PASSWORD;
       if (serverPassword === apiKey) {
@@ -41,7 +41,7 @@ const configureServer = async (apiKey) => {
         firebaseConfig.appId = envVars.APP_ID;
         firebaseConfig.measurementId = envVars.MEASUREMENT_ID;
         serverPassword = envVars.SERVER_PASSWORD;
-        initializeFirebase(firebaseConfig,apiKey);
+        await initializeFirebase(firebaseConfig,apiKey);
         setServerData();
         response = new Response("Server configured!");
         isConfigured = true;
