@@ -60,7 +60,7 @@ const startServer = async (apiKey) => {
       page = await browser.newPage();
 
       scrapingInterval = setInterval(() => {
-        scrapingMaps(getMinutes);
+        scrapingMaps();
       }, scrapingFrequency / 4);
 
       saveInterval = setInterval(() => {
@@ -181,7 +181,7 @@ const apiDocsPage = () => {
     headers: { "Content-Type": "text/html" },
   });
 };
-const scrapingMaps = async (getMinutes) => {
+const scrapingMaps = async () => {
   try {
     for (const request of requests) {
       await page.goto(request.ruta);
