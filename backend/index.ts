@@ -10,7 +10,8 @@ import {
   getRequestById,
   getResultsById,
 } from "./services/realtimeDatabaseService.ts";
-import { getId, validateURL } from "./utils/urlManager.ts";
+import { validateURL } from "./utils/urlManager.ts";
+import { getMinutes } from "./utils/timeManager.ts";
 
 const docsPage = await Deno.readTextFile("index.html");
 const firebaseConfig: any = {};
@@ -193,10 +194,7 @@ const scrapingMaps = async () => {
         );
 
         return divs.map((div) => {
-          const parts = div.innerHTML.split(" ");
-          return parts.length > 2
-            ? parseInt(parts[0]) * 60 + parseInt(parts[2])
-            : parseInt(parts[0]);
+          return getMinutes(div.innerHTML);
         });
       });
       if (results[request.id] == undefined) {
