@@ -11,7 +11,6 @@ import {
   getResultsById,
 } from "./services/realtimeDatabaseService.ts";
 import { validateURL } from "./utils/urlManager.ts";
-import { getMinutes } from "./utils/timeManager.ts";
 
 const docsPage = await Deno.readTextFile("index.html");
 const firebaseConfig: any = {};
@@ -42,7 +41,7 @@ const configureServer = async (apiKey) => {
         firebaseConfig.appId = envVars.APP_ID;
         firebaseConfig.measurementId = envVars.MEASUREMENT_ID;
         serverPassword = envVars.SERVER_PASSWORD;
-        await initializeFirebase(firebaseConfig,apiKey);
+        await initializeFirebase(firebaseConfig, apiKey);
         setServerData();
         response = new Response("Server configured!");
         isConfigured = true;
@@ -194,7 +193,22 @@ const scrapingMaps = async (getMinutes) => {
         );
 
         return divs.map((div) => {
-          return getMinutes(div.innerHTML);
+          let parts = div.innerHTML.split(" ");
+
+          let minutes = 0;
+
+          for (let i = 0; i < parts.length; i += 2) {
+            let countMinutes = parseInt(parts[i]);
+            let units = parts[i + 1];
+
+            if (units.includes("h")) {
+              minutes += countMinutes * 60;
+            } else if (units.includes("min")) {
+              minutes += countMinutes;
+            }
+          }
+
+          return minutes;
         });
       });
       if (results[request.id] == undefined) {
@@ -207,7 +221,6 @@ const scrapingMaps = async (getMinutes) => {
           optionsTimeType: "minutes",
         });
       }
-      // await browser.close();
     }
     console.log(results);
     console.log(" ----------------------------");
